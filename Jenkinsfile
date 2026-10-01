@@ -37,6 +37,16 @@ pipeline {
                 echo 'Running Integration Tests...'
             }
         }
+
+        stage('Create Artifact') {
+            steps {
+                sh '''
+                   zip -r azure-devops-aks-project.zip app.py requirements.txt
+                '''
+            }
+        }
+
+    
     }
 
     post {
