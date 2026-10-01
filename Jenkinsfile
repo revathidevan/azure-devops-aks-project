@@ -3,15 +3,26 @@ pipeline {
 
     stages {
 
+        stage('Setup Python') {
+            steps {
+                sh '''
+                    python3 -m venv jenkins-venv
+                    ./jenkins-venv/bin/pip install --upgrade pip
+                    ./jenkins-venv/bin/pip install -r requirements.txt
+                    ./jenkins-venv/bin/pip install pytest pytest-cov
+                '''
+            }
+        }
+
         stage('Unit Test') {
             steps {
-                sh 'pytest'
+                sh './jenkins-venv/bin/pytest'
             }
         }
 
         stage('Code Coverage') {
             steps {
-                sh 'pytest --cov=app --cov-fail-under=90'
+                sh './jenkins-venv/bin/pytest --cov=app --cov-fail-under=90'
             }
         }
 
