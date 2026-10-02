@@ -41,26 +41,26 @@ pipeline {
         stage('Create Artifact') {
             steps {
                 sh '''
-                   zip -r azure-devops-aks-project.zip app.py requirements.txt
+                    zip -r azure-devops-aks-project.zip app.py requirements.txt
                 '''
             }
         }
-        
+
         stage('Upload to Artifactory') {
-           steps {
-               withCredentials([usernamePassword(
-                   credentialsId: 'artifactory-local',
-                   usernameVariable: 'ARTIFACTORY_USER',
-                   passwordVariable: 'ARTIFACTORY_PASSWORD'
-               )]) {
-                   sh '''
-                       curl -u "$ARTIFACTORY_USER:$ARTIFACTORY_PASSWORD" \
-                         -T azure-devops-aks-project.zip \
-                         "http://localhost:8081/artifactory/generic-local/azure-devops-aks-project.zip"
-                   '''
-              }
-          }
-       }
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'artifactory-local',
+                    usernameVariable: 'ARTIFACTORY_USER',
+                    passwordVariable: 'ARTIFACTORY_PASSWORD'
+                )]) {
+                    sh '''
+                        curl -u "$ARTIFACTORY_USER:$ARTIFACTORY_PASSWORD" \
+                          -T azure-devops-aks-project.zip \
+                          "http://localhost:8081/artifactory/generic-local/azure-devops-aks-project.zip"
+                    '''
+                }
+            }
+        }
     }
 
     post {
